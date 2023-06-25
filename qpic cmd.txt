@@ -1,0 +1,53 @@
+本地运行命令集合：
+F:
+cd Graduation Project\qpic
+
+tmux命令集合：
+tmux new -t name
+tmux attach -t name
+tmux kill-session -t name
+ctrl+b -> d
+
+远程命令集合：
+cd bishe2023/Zengyu_Ye
+conda activate Zengyu_Ye
+
+可视化命令：
+python visualize.py  --hoi  --dataset_file hico  --hoi_path data/hico_20160224_det  --num_obj_classes 80  --num_verb_classes 117  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1 --resume logs/hico/checkpoint0149.pth
+python visualize.py  --hoi  --dataset_file vcoco  --hoi_path data/v-coco  --num_obj_classes 81  --num_verb_classes 29  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1 --resume logs/vcoco/checkpoint0149.pth
+
+hico-det训练命令：
+python main.py  --pretrained params/detr-r50-pre-hico.pth  --output_dir logs/hico  --hoi  --dataset_file hico  --hoi_path data/hico_20160224_det  --num_obj_classes 80  --num_verb_classes 117  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1
+python main.py  --pretrained params/detr-r50-pre-hico.pth  --output_dir logs/hico_1  --hoi  --dataset_file hico  --hoi_path data/hico_20160224_det  --num_obj_classes 80  --num_verb_classes 117  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1  --data_augmentation simple
+python main.py  --pretrained params/detr-r50-pre-hico.pth  --output_dir logs/hico_2  --hoi  --dataset_file hico  --hoi_path data/hico_20160224_det  --num_obj_classes 80  --num_verb_classes 117  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1  --data_augmentation middle
+
+v-coco训练命令：
+python main.py  --pretrained params/detr-r50-pre-vcoco.pth  --output_dir logs/vcoco  --hoi  --dataset_file vcoco  --hoi_path data/v-coco  --num_obj_classes 81  --num_verb_classes 29  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1
+python main.py  --pretrained params/detr-r50-pre-vcoco.pth  --output_dir logs/vcoco_1  --hoi  --dataset_file vcoco  --hoi_path data/v-coco  --num_obj_classes 81  --num_verb_classes 29  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1  --data_augmentation simple
+python main.py  --pretrained params/detr-r50-pre-vcoco.pth  --output_dir logs/vcoco_2  --hoi  --dataset_file vcoco  --hoi_path data/v-coco  --num_obj_classes 81  --num_verb_classes 29  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1  --data_augmentation middle
+
+environment训练命令：
+hico-det：
+python main.py  --pretrained params/detr-r50-pre-hico.pth  --output_dir logs/hico_3  --hoi  --dataset_file hico  --hoi_path data/hico_20160224_det  --num_obj_classes 80  --num_verb_classes 117  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1  --data_augmentation none --environment yes
+v-coco：
+python main.py  --pretrained params/detr-r50-pre-vcoco.pth  --output_dir logs/vcoco_3  --hoi  --dataset_file vcoco  --hoi_path data/v-coco  --num_obj_classes 81  --num_verb_classes 29  --backbone resnet50  --set_cost_bbox 2.5  --set_cost_giou 1  --bbox_loss_coef 2.5  --giou_loss_coef 1  --data_augmentation none --environment yes
+
+
+
+
+
+服务器anaconda3环境安装：
+wget https://repo.anaconda.com/archive/Anaconda3-2023.03-Linux-x86_64.sh
+chmod +x Anaconda3-2023.03-Linux-x86_64.sh
+./Anaconda3-2023.03-Linux-x86_64.sh
+pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
+pip install matplotlib --force-reinstall
+pip install opencv-python
+pip install fvcore
+pip install ninja
+pip install cython
+pip install pycocotools
+pip install submitit
+pip install git+https://github.com/cocodataset/panopticapi.git
+pip install scipy
+python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
