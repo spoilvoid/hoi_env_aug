@@ -106,7 +106,7 @@ For the basic QPIC HICO-DET training.
 ```
 python main.py \
         --pretrained params/detr-r50-pre-hico.pth \
-        --output_dir logs \
+        --output_dir logs\hico_det \
         --hoi \
         --dataset_file hico \
         --hoi_path data/hico_20160224_det \
@@ -118,79 +118,8 @@ python main.py \
         --bbox_loss_coef 2.5 \
         --giou_loss_coef 1
 ```
-If you want to train the model with simple augmentation, set `--data_augmentation simple`. If you want to train the model with simple augmentation, set `--data_augmentation middle`. If you want to train the model with simple augmentation, set `--environment yes`.
+If you want to train the model with *simple augmentation*, set `--data_augmentation simple`. If you want to train the model with *middle augmentation*, set `--data_augmentation middle`. If you want to train the model with *environment sensor*, set `--environment yes`.
 For the simple augmentation QPIC HICO-DET training.
-```
-python main.py \
-        --pretrained params/detr-r50-pre-hico.pth \
-        --output_dir logs/hico \
-        --hoi \
-        --dataset_file hico \
-        --hoi_path data/hico_20160224_det \
-        --num_obj_classes 80 \
-        --num_verb_classes 117 \
-        --backbone resnet50 \
-        --set_cost_bbox 2.5 \
-        --set_cost_giou 1 \
-        --bbox_loss_coef 2.5 \
-        --giou_loss_coef 1 \
-        --data_augmentation simple
-```
-
-For the middle augmentation QPIC HICO-DET training.
-```
-python main.py \
-        --pretrained params/detr-r50-pre-hico.pth \
-        --output_dir logs/hico_1 \
-        --hoi \
-        --dataset_file hico \
-        --hoi_path data/hico_20160224_det \
-        --num_obj_classes 80 \
-        --num_verb_classes 117 \
-        --backbone resnet50 \
-        --set_cost_bbox 2.5 \
-        --set_cost_giou 1 \
-        --bbox_loss_coef 2.5 \
-        --giou_loss_coef 1 \
-        --data_augmentation middle
-```
-
-For the middle augmentation QPIC HICO-DET training.
-```
-python main.py \
-        --pretrained params/detr-r50-pre-hico.pth \
-        --output_dir logs/hico_2 \
-        --hoi \
-        --dataset_file hico \
-        --hoi_path data/hico_20160224_det \
-        --num_obj_classes 80 \
-        --num_verb_classes 117 \
-        --backbone resnet50 \
-        --set_cost_bbox 2.5 \
-        --set_cost_giou 1 \
-        --bbox_loss_coef 2.5 \
-        --giou_loss_coef 1 \
-        --data_augmentation middle
-```
-
-For the environment sensor QPIC HICO-DET training.
-```
-python main.py \
-        --pretrained params/detr-r50-pre-hico.pth \
-        --output_dir logs/hico_3 \
-        --hoi \
-        --dataset_file hico \
-        --hoi_path data/hico_20160224_det \
-        --num_obj_classes 80 \
-        --num_verb_classes 117 \
-        --backbone resnet50 \
-        --set_cost_bbox 2.5 \
-        --set_cost_giou 1 \
-        --bbox_loss_coef 2.5 \
-        --giou_loss_coef 1 \
-        --data_augmentation none \
-        --environment yes
-```
 
 For the basic QPIC V-COCO training.
 ```
@@ -208,61 +137,8 @@ python main.py \
         --bbox_loss_coef 2.5 \
         --giou_loss_coef 1
 ```
+The other settings are the same as HICO-DET training.
 
-For the simple augmentation QPIC V-COCO training.
-```
-python main.py \
-        --pretrained params/detr-r50-pre-vcoco.pth \
-        --output_dir logs\vcoco_1 \
-        --hoi \
-        --dataset_file vcoco \
-        --hoi_path data/v-coco_1 \
-        --num_obj_classes 81 \
-        --num_verb_classes 29 \
-        --backbone resnet50 \
-        --set_cost_bbox 2.5 \
-        --set_cost_giou 1 \
-        --bbox_loss_coef 2.5 \
-        --giou_loss_coef 1 \
-        --data_augmentation simple
-```
-
-For the middle augmentation QPIC V-COCO training.
-```
-python main.py \
-        --pretrained params/detr-r50-pre-vcoco.pth \
-        --output_dir logs\vcoco_2 \
-        --hoi \
-        --dataset_file vcoco \
-        --hoi_path data/v-coco \
-        --num_obj_classes 81 \
-        --num_verb_classes 29 \
-        --backbone resnet50 \
-        --set_cost_bbox 2.5 \
-        --set_cost_giou 1 \
-        --bbox_loss_coef 2.5 \
-        --giou_loss_coef 1 \
-        --data_augmentation middle
-```
-
-For the environment sensor QPIC V-COCO training.
-```
-python main.py \
-        --pretrained params/detr-r50-pre-vcoco.pth \
-        --output_dir logs\vcoco_3 \
-        --hoi \
-        --dataset_file vcoco \
-        --hoi_path data/v-coco \
-        --num_obj_classes 81 \
-        --num_verb_classes 29 \
-        --backbone resnet50 \
-        --set_cost_bbox 2.5 \
-        --set_cost_giou 1 \
-        --bbox_loss_coef 2.5 \
-        --giou_loss_coef 1 \
-        --data_augmentation none \
-        --environment yes
-```
 Note that the number of object classes is 81 because one class is added for missing object.
 
 If you have multiple GPUs on your machine, you can utilize them to speed up the training. The number of GPUs is specified with the `--nproc_per_node` option. The following command starts the training with 8 GPUs for the HICO-DET training.
@@ -319,26 +195,20 @@ python generate_vcoco_official.py \
 ## Results
 ***Our result is only trained in the ResNet50 backbone, thus we'll only compare the ResNet50 backbone below.***
 HICO-DET.
-|| Full (D) | Rare (D) | Non-rare (D) | Full(KO) | Rare (KO) | Non-rare (KO) |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-|QPIC (ResNet50)| 29.07 | 21.85 | 31.23 | 31.68 | 24.14 | 33.93 |
-|QPIC (ResNet101)| 29.90 | 23.92 | 31.69 | 32.38 | 26.06 | 34.27 |
-
-D: Default, KO: Known object
+| models | mAP(full) | mAP(none-rare) | mAP(rare) | max recall |
+| :--- | :---: | :---: | :---: | :---: |
+| self-trained QPIC | 25.89 | 28.03 | 18.74 | 57.62 |
+| QPIC + simple augmentation | 27.02 | 29.15 | 20.23 | 59.51 |
+| QPIC + middle augmentation | 26.85 | 29.11 | 20.44 | 59.26 |
+| QPIC + environment sensor | 26.77 | 28.76 | 20.43 | 59.58 |
+| original QPIC(ResNet101) | 29.07 | 27.42 | 31.69 | / |
 
 V-COCO.
-|| Scenario 1 | Scenario 2 |
-| :--- | :---: | :---: |
-|QPIC (ResNet50)| 58.8 | 61.0
-|QPIC (ResNet101)| 58.3 | 60.7
-
-## Citation
-Please consider citing our paper if it helps your research.
-```
-@inproceedings{tamura_cvpr2021,
-author = {Tamura, Masato and Ohashi, Hiroki and Yoshinaga, Tomoaki},
-title = {{QPIC}: Query-Based Pairwise Human-Object Interaction Detection with Image-Wide Contextual Information},
-booktitle={CVPR},
-year = {2021},
-}
+|models | mAP |
+| :--- | :---: |
+| self-trained QPIC | 54.79 |
+| QPIC + simple augmentation | 56.84 |
+| QPIC + middle augmentation | 55.33 |
+| QPIC + environment sensor | 57.04 |
+| original QPIC(ResNet101) | 58.8 |
 ```
