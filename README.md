@@ -2,7 +2,7 @@
 This paper is developed based on QPIC: Query-Based Pairwise Human-Object Interaction Detection with Image-Wide Contextual Information by [Masato Tamura](https://scholar.google.co.jp/citations?user=IbPzCocAAAAJ), [Hiroki Ohashi](https://scholar.google.com/citations?user=GKC6bbYAAAAJ), and Tomoaki Yoshinaga which implemented by expanding [DETR](https://github.com/hitachi-rd-cv/qpic). You can check the original QPIC code from [this respository](https://github.com/hitachi-rd-cv/qpic).
 
 Based on QPIC, This paper develops 3 methods to improve the model performance: simple data augmentation, middle data augmentation and environment sensor module.
-by [Zengyu Ye].
+by [Zengyu Ye](spoilvoid.github.io).
 
 ## Preparation
 
@@ -39,7 +39,7 @@ HICO-DET dataset can be downloaded [here](https://drive.google.com/open?id=1QZcJ
 
 Instead of using the original annotations files, we use the annotation files provided by the PPDM authors. The annotation files can be downloaded from [here](https://drive.google.com/open?id=1WI-gsNLS-t0Kh8TVki1wXqc3y2Ow1f2R). The downloaded annotation files have to be placed as follows.
 ```
-qpic
+hoi_env_aug
  |─ data
  │   └─ hico_20160224_det
  |       |─ annotations
@@ -50,9 +50,9 @@ qpic
 ```
 
 #### V-COCO
-First clone the repository of V-COCO from [here](https://github.com/s-gupta/v-coco), and then follow the instruction to generate the file `instances_vcoco_all_2014.json`. Next, download the prior file `prior.pickle` from [here](https://drive.google.com/drive/folders/10uuzvMUCVVv95-xAZg5KS94QXm7QXZW4). Place the files and make directories as follows.
+First clone the repository of V-COCO from [here](https://github.com/s-gupta/v-coco), and then follow the instruction to generate the file `instances_vcoco_all_2014.json`. Next, download the prior file `prior.pickle` from [here](https://drive.google.com/drive/s/10uuzvMUCVVv95-xAZg5KS94QXm7QXZW4). Place the files and make directories as follows.
 ```
-qpic
+hoi_env_aug
  |─ data
  │   └─ v-coco
  |       |─ data
@@ -82,7 +82,7 @@ Note that only Python2 can be used for this conversion because `vsrl_utils.py` i
 V-COCO annotations with the HOIA format, `corre_vcoco.npy`, `test_vcoco.json`, and `trainval_vcoco.json` will be generated to `annotations` directory.
 
 ### Pre-trained parameters
-Our QPIC have to be pre-trained with the COCO object detection dataset. For the HICO-DET training, this pre-training can be omitted by using the parameters of DETR. The parameters can be downloaded from [here](https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth) for the ResNet50 backbone, and [here](https://dl.fbaipublicfiles.com/detr/detr-r101-2c7b67e5.pth) for the ResNet101 backbone. For the V-COCO training, this pre-training has to be carried out because some images of the V-COCO evaluation set are contained in the training set of DETR. You have to pre-train QPIC without those overlapping images by yourself for the V-COCO evaluation.
+QPIC has to be pre-trained with the COCO object detection dataset. For the HICO-DET training, this pre-training can be omitted by using the parameters of DETR. The parameters can be downloaded from [here](https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth) for the ResNet50 backbone, and [here](https://dl.fbaipublicfiles.com/detr/detr-r101-2c7b67e5.pth) for the ResNet101 backbone. For the V-COCO training, this pre-training has to be carried out because some images of the V-COCO evaluation set are contained in the training set of DETR. You have to pre-train QPIC without those overlapping images by yourself for the V-COCO evaluation. We offer you additional V-COCO pretrained model weight from [here](https://drive.google.com/file/d/12RnfCpfAmAN089StR29h2UJ7qS96bIsq/view?usp=drive_link) for the ResNet50 backbone. You can also download HICO-DET trained model wight from the same  for the ResNet50 backbone.
 
 For HICO-DET, move the downloaded parameters to the `params` directory and convert the parameters with the following command.
 ```
@@ -98,9 +98,6 @@ python convert_parameters.py \
         --save_path params/detr-r50-pre-vcoco.pth \
         --dataset vcoco
 ```
-
-### Trained parameters
-The trained parameters are available [here](https://github.com/hitachi-rd-cv/qpic/releases/tag/v1.0).
 
 ## Training
 After the preparation, you can start the training with the following command.
@@ -121,7 +118,7 @@ python main.py \
         --bbox_loss_coef 2.5 \
         --giou_loss_coef 1
 ```
-
+If you want to train the model with simple augmentation, set `--data_augmentation simple`. If you want to train the model with simple augmentation, set `--data_augmentation middle`. If you want to train the model with simple augmentation, set `--environment yes`.
 For the simple augmentation QPIC HICO-DET training.
 ```
 python main.py \
@@ -288,6 +285,9 @@ python -m torch.distributed.launch \
         --giou_loss_coef 1
 ```
 
+### Trained parameters
+The below trained model parameters are available [here](https://drive.google.com/drive/s/1C499l5S7UIip2VJhw7h48NYjI7Rruo07?usp=drive_link). The *logs* folder contains train parameters and corresponding evaluation results and *models* folder contains each trained model with the last epoch.
+
 ## Evaluation
 The evaluation is conducted at the end of each epoch during the training. The results are written in `logs/log.txt` like below:
 ```
@@ -298,7 +298,7 @@ The evaluation is conducted at the end of each epoch during the training. The re
 You can also conduct the evaluation with trained parameters as follows.
 ```
 python main.py \
-        --pretrained qpic_resnet50_hico.pth \
+        --pretrained detr_resnet50_hico.pth \
         --hoi \
         --dataset_file hico \
         --hoi_path data/hico_20160224_det \
@@ -317,6 +317,7 @@ python generate_vcoco_official.py \
 ```
 
 ## Results
+***Our result is only trained in the ResNet50 backbone, thus we'll only compare the ResNet50 backbone below.***
 HICO-DET.
 || Full (D) | Rare (D) | Non-rare (D) | Full(KO) | Rare (KO) | Non-rare (KO) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
