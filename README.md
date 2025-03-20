@@ -217,6 +217,7 @@ python generate_vcoco_official.py \
 
 ## Results
 ***Our result is only trained in the ResNet50 backbone, thus we'll only compare the ResNet50 backbone below.***
+
 HICO-DET.
 | models | mAP(full) | mAP(none-rare) | mAP(rare) | max recall |
 | :--- | :---: | :---: | :---: | :---: |
