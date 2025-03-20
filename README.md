@@ -1,11 +1,7 @@
-# QPIC: Query-Based Pairwise Human-Object Interaction Detection with Image-Wide Contextual Information
-by [Masato Tamura](https://scholar.google.co.jp/citations?user=IbPzCocAAAAJ), [Hiroki Ohashi](https://scholar.google.com/citations?user=GKC6bbYAAAAJ), and Tomoaki Yoshinaga.
+# Character-object interaction detection task based on environmental perception
+This paper is developed based on QPIC: Query-Based Pairwise Human-Object Interaction Detection with Image-Wide Contextual Information by [Masato Tamura](https://scholar.google.co.jp/citations?user=IbPzCocAAAAJ), [Hiroki Ohashi](https://scholar.google.com/citations?user=GKC6bbYAAAAJ), and Tomoaki Yoshinaga which implemented by expanding [DETR](https://github.com/hitachi-rd-cv/qpic). You can check the original QPIC code from [this respository](https://github.com/hitachi-rd-cv/qpic).
 
-This repository contains the official implementation of the paper "[QPIC: Query-Based Pairwise Human-Object Interaction Detection with Image-Wide Contextual Information](https://arxiv.org/abs/2103.05399)", which is accepted to CVPR2021.
-
-QPIC is implemented by extending the recently proposed object detector, DETR. QPIC leverages the query-based detection and attention mechanism in the transformer, and as a result, achieves high HOI detection performance with simple detection heads.
-
-Based on QPIC, I've develop 3 methods to improve the model performance, simple data augmentation, middle data augmentation and environment sensor module.
+Based on QPIC, This paper develops 3 methods to improve the model performance: simple data augmentation, middle data augmentation and environment sensor module.
 by [Zengyu Ye].
 
 ## Preparation
