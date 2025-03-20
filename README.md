@@ -4,6 +4,29 @@ This paper is developed based on QPIC: Query-Based Pairwise Human-Object Interac
 Based on QPIC, This paper develops 3 methods to improve the model performance: simple data augmentation, middle data augmentation and environment sensor module.
 by [Zengyu Ye](spoilvoid.github.io).
 
+## metrics explanation
+
+![Data Augmentation Procedure ](figure/data_augmentation_procedure.png)
+### Simple Augmentation
+Simple augmentation uses [Detectron2](https://github.com/facebookresearch/detectron2) to conduct 7 basic figure transforms. There names and operation functions are as follows:
+1)	Horizontal Flip: `RandomFlip(1,horizontal=True,vertical=False)`
+2)	Vertical Flip: `RandomFlip(1,horizontal=False,vertical=True)`
+3)	Random Vrop: `RandomCrop("relative_range",(0.8,0.8))`
+4) Random Extent: `RandomExtent((1.2,1.2),(0.2,0.2))`
+5)	Random Rotation: `RandomRotation([π,2pi], center=[[0.4,0.4],[0.6,0.6]],sample_style=’range’)`
+6)	Random Brightness: `RandomBrightness(0.8,1.2)`
+7)	Random Contrast: `RandomContrast(0.8,1.2)`
+
+### Middle Augmentation
+Middle augmentation move person or object in low distances like shift with standard Gassuain Distribution and then uses FMM(Fast Marching Method) algorithm in *opencv-python* to fix missing pixels like `cv2.inpaint(source,inpaintMask, inpaintRadius=5, ﬂags=cv2.INPAINT_TELEA)`
+
+### Environment Sensor
+Original QPIC only judges HOI behaviors based on 2 bounding boxs. However, background will influence behaviors types, like we intend to sleep in the bedroom. Thus we add a *SENet* like architecture to aid Transformer Encoder to judge HOI behaviors like below.
+![Data Augmentation Procedure ](figure/qpic_modify.png)
+
+Detailed *Environment Sensor* Architectures are as follows.
+![Data Augmentation Procedure ](figure/environment_sensor.png)
+
 ## Preparation
 
 ### Dependencies
